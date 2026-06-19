@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import pkg from 'pg';
 
-dotenc.config();
+dotenv.config();
 
 const { Pool, types } = pkg;
 

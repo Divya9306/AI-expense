@@ -14,14 +14,25 @@ const DROP_ALL= `
     DROP TABLE IF EXISTS USERS CASCADE;
 `;
 
-const runMigration =async() =>{
-    const shouldReset = process.argv.includes("--reste");
+const runMigration = async () => {
+    const shouldReset = process.argv.includes("--reset");
     const schemaPath = path.join(_dirname, "..", "sql", "schema.sql");
 
-try {
-    if (shouldReset) {
-        console.log("Dropping existing tables...");
-        await pool.query(DROP_ALL);
+    try {
+        if (shouldReset) {
+            console.log("Dropping existing tables...");
+            await pool.query(DROP_ALL);
+        }
+
+        const schema = await fs.readFile(schemaPath, "utf8");
+        await pool.query(schema);
+        console.log("Migration completed.");
+    } catch (error) {
+        console.error("Migration failed:", error);
+        process.exitCode = 1;
+    } finally {
+        await pool.end();
     }
-}
-}
+};
+
+runMigration();
