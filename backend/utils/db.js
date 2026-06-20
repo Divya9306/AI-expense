@@ -1,7 +1,12 @@
 import dotenv from 'dotenv';
+import path from 'path';
 import pkg from 'pg';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const { Pool, types } = pkg;
 
@@ -11,7 +16,7 @@ const { Pool, types } = pkg;
 types.setTypeParser(1082, (val) => val);
 
 const pool = new Pool({
-    connectString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: {rejectUnauthorized: false},
 });
 

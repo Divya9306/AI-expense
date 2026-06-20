@@ -38,7 +38,7 @@ CREATE INDEX idx_transactions_category ON transactions(category_id);
 CREATE TABLE budgets {
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES USERS(id) ON DELETE CASCADE,
-    category_id INT NOT NULLREFERENCES categories(id) ON DELETE CASCADE,
+    category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     amount NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
     period VARCHAR(10) NOT NULL DEFAULT 'monthly' CHECK (period IN ( 'monthly', 'weekly')),
     start_date DATE NOT NULL,
